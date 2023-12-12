@@ -1,21 +1,25 @@
-static mut WINDOW_DIMENSIONS: (u32, u32) = (100, 100);
-static mut GRID_SIZE: (u32, u32) = (100, 100);
-static mut TICKRATE: u32 = 60;
+struct Params {
+    size: (u32, u32),
+    window: (u32, u32),
+    tick: u32
+}
 
 fn main() -> Result<(), String> {
     env_logger::init();
-    handle_args()?;
+
+    let mut params = Params { size: (100, 100), window: (100, 100), tick: 60 };
+    handle_args(&mut params)?;
 
     Ok(())
 }
 
-fn handle_args() -> Result<(), String> {
+fn handle_args(params: &mut Params) -> Result<(), String> {
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
-            "--size" | "-s" => parse_size(&mut args)?,
-            "--window" | "-w" => parse_window(&mut args)?,
-            "--tick" | "-t" => parse_tick(&mut args)?,
+            "--size" | "-s" => params.size = parse_size(&mut args)?,
+            "--window" | "-w" => params.window = parse_window(&mut args)?,
+            "--tick" | "-t" => params.tick = parse_tick(&mut args)?,
             "--help" | "-h" => { help(); break },
             s => {
                 help();
@@ -26,11 +30,10 @@ fn handle_args() -> Result<(), String> {
     Ok(())
 }
 
-fn parse_size(args: &mut std::iter::Skip<std::env::Args>) -> Result<(), String> {
+fn parse_size(args: &mut std::iter::Skip<std::env::Args>) -> Result<(u32, u32), String> {
     if let (Some(x), Some(y)) = (args.next(), args.next()) {
         if let (Ok(x), Ok(y)) = (x.parse::<u32>(), y.parse::<u32>()) {
-            unsafe { GRID_SIZE = (x, y) };
-            Ok(())
+            Ok((x, y))
         } else {
             Err("Could not parse the numbers after size".to_owned())
         }
@@ -39,11 +42,10 @@ fn parse_size(args: &mut std::iter::Skip<std::env::Args>) -> Result<(), String> 
     }
 }
 
-fn parse_window(args: &mut std::iter::Skip<std::env::Args>) -> Result<(), String> {
+fn parse_window(args: &mut std::iter::Skip<std::env::Args>) -> Result<(u32, u32), String> {
     if let (Some(x), Some(y)) = (args.next(), args.next()) {
         if let (Ok(x), Ok(y)) = (x.parse::<u32>(), y.parse::<u32>()) {
-            unsafe { WINDOW_DIMENSIONS = (x, y) };
-            Ok(())
+            Ok((x, y))
         } else {
             Err("Could not parse the numbers after window".to_owned())
         }
@@ -52,21 +54,18 @@ fn parse_window(args: &mut std::iter::Skip<std::env::Args>) -> Result<(), String
     }
 }
 
-fn parse_tick(args: &mut std::iter::Skip<std::env::Args>) -> Result<(), String> {
+fn parse_tick(args: &mut std::iter::Skip<std::env::Args>) -> Result<u32, String> {
     if let Some(tick) = args.next() {
-        unsafe {
-            if let Ok(tick) = tick.parse::<u32>() {
-                TICKRATE = tick;
-            } else {
-                return Err("Could not parse tick".to_owned())
-            }
+        if let Ok(tick) = tick.parse::<u32>() {
+            Ok(tick)
+        } else {
+            return Err("Could not parse tick".to_owned())
         }
     } else {
-        return Err("Expected an integer after tick".to_owned());
+        return Err("Expected an integer after tick".to_owned())
     }
-    Ok(())
 }
 
 fn help() {
-    println!("Usage: ./pgol [--size x y] [--window x y] [--tick x]");
+    println!("Usage: ./pgol [--size x y | --window x y | --tick x]");
 }
