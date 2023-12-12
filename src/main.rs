@@ -1,14 +1,21 @@
+#[allow(dead_code)]
+
+mod game;
+use game::run::run;
+
 struct Params {
     size: (u32, u32),
     window: (u32, u32),
-    tick: u32
+    tick: f32
 }
 
 fn main() -> Result<(), String> {
     env_logger::init();
 
-    let mut params = Params { size: (100, 100), window: (100, 100), tick: 60 };
+    let mut params = Params { size: (100, 100), window: (100, 100), tick: 60.0 };
     handle_args(&mut params)?;
+
+    run(params);
 
     Ok(())
 }
@@ -54,9 +61,9 @@ fn parse_window(args: &mut std::iter::Skip<std::env::Args>) -> Result<(u32, u32)
     }
 }
 
-fn parse_tick(args: &mut std::iter::Skip<std::env::Args>) -> Result<u32, String> {
+fn parse_tick(args: &mut std::iter::Skip<std::env::Args>) -> Result<f32, String> {
     if let Some(tick) = args.next() {
-        if let Ok(tick) = tick.parse::<u32>() {
+        if let Ok(tick) = tick.parse::<f32>() {
             Ok(tick)
         } else {
             return Err("Could not parse tick".to_owned())
