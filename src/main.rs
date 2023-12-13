@@ -1,5 +1,6 @@
-mod engine;
 #[allow(dead_code)]
+
+mod engine;
 mod game;
 
 use game::run::run;

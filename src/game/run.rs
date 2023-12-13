@@ -15,7 +15,7 @@ pub fn run(params: Params) {
 
         sim_tick(&mut cells);
         if params.term {
-            term::draw(&cells);
+            let _ = term::draw(&cells);
         }
         let tick_time = tick_time - time::Instant::now();
 

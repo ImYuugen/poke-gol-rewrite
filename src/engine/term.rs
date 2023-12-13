@@ -1,10 +1,12 @@
 use crate::game::{cells, types};
+use crossterm::{cursor, execute};
 use owo_colors::{FgDynColorDisplay, OwoColorize, Rgb};
 
 /// Prints every cell on the board.
-pub fn draw(cells: &[Vec<cells::Cell>]) {
+pub fn draw(cells: &[Vec<cells::Cell>]) -> Result<(), std::io::Error> {
     let mut buf = String::with_capacity(cells.len() * cells[0].len());
 
+    execute!(std::io::stdout(), cursor::SavePosition)?;
     for row in cells.iter() {
         for cell in row.iter() {
             buf.push_str(&format!("{}", type_repr(cell.type_c)));
@@ -12,8 +14,10 @@ pub fn draw(cells: &[Vec<cells::Cell>]) {
         buf.push('\n');
     }
 
-    // TODO: Write over last board
+    // FIX: Board not overwriting when console not cleared
     print!("{}", buf);
+    execute!(std::io::stdout(), cursor::RestorePosition)?;
+    Ok(())
 }
 
 /// Returns the character that should represent a cell of a given [Type](game/Type).
