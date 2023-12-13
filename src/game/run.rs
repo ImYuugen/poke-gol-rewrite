@@ -1,6 +1,7 @@
 use crate::{
     Params,
     game::cells,
+    engine::term,
 };
 use std::{
     thread,
@@ -18,6 +19,9 @@ pub fn run(params: Params) {
         let tick_time = time::Instant::now();
 
         sim_tick(&mut cells);
+        if params.term {
+            term::draw(&cells);
+        }
         let tick_time = tick_time - time::Instant::now();
 
         // Throttle tick
@@ -26,5 +30,4 @@ pub fn run(params: Params) {
 }
 
 fn sim_tick(_cells: &mut [Vec<cells::Cell>]) {
-    println!("Tick !");
 }

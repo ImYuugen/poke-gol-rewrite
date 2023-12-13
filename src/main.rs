@@ -1,18 +1,26 @@
 #[allow(dead_code)]
 
 mod game;
+mod engine;
+
 use game::run::run;
 
 struct Params {
     size: (u32, u32),
     window: (u32, u32),
-    tick: f32
+    tick: f32,
+    term: bool,
 }
 
 fn main() -> Result<(), String> {
     env_logger::init();
 
-    let mut params = Params { size: (100, 100), window: (100, 100), tick: 60.0 };
+    let mut params = Params {
+        size: (100, 100),
+        window: (100, 100),
+        tick: 60.0,
+        term: false
+    };
     handle_args(&mut params)?;
 
     run(params);
@@ -24,9 +32,11 @@ fn handle_args(params: &mut Params) -> Result<(), String> {
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
+            "--" => break,
             "--size" | "-s" => params.size = parse_size(&mut args)?,
             "--window" | "-w" => params.window = parse_window(&mut args)?,
             "--tick" | "-t" => params.tick = parse_tick(&mut args)?,
+            "--term" | "-x" => params.term = true,
             "--help" | "-h" => { help(); break },
             s => {
                 help();
@@ -66,13 +76,13 @@ fn parse_tick(args: &mut std::iter::Skip<std::env::Args>) -> Result<f32, String>
         if let Ok(tick) = tick.parse::<f32>() {
             Ok(tick)
         } else {
-            return Err("Could not parse tick".to_owned())
+            Err("Could not parse tick".to_owned())
         }
     } else {
-        return Err("Expected an integer after tick".to_owned())
+        Err("Expected an integer after tick".to_owned())
     }
 }
 
 fn help() {
-    println!("Usage: ./pgol [--size x y | --window x y | --tick x]");
+    println!("Usage: ./pgol [--size x y | --window x y | --tick x | --term]");
 }

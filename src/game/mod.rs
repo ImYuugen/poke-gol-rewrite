@@ -1,4 +1,3 @@
 pub mod run;
-
-mod cells;
-mod types;
+pub mod cells;
+pub mod types;
