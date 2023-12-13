@@ -1,13 +1,8 @@
-use crate::{
-    Params,
-    game::cells,
-    engine::term,
-};
-use std::{
-    thread,
-    time,
-};
+use crate::{engine::term, game::cells, Params};
+use std::{thread, time};
 
+/// Runs the simulation and the render,
+/// being a window or in terminal based on [params](Params).
 pub fn run(params: Params) {
     let mut cells = cells::init_cells(params.size);
 
@@ -29,5 +24,5 @@ pub fn run(params: Params) {
     }
 }
 
-fn sim_tick(_cells: &mut [Vec<cells::Cell>]) {
-}
+/// Computes the next step of the simulation
+fn sim_tick(_cells: &mut [Vec<cells::Cell>]) {}

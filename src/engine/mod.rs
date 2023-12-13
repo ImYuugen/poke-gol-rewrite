@@ -1,2 +1,2 @@
-pub mod term;
 mod render;
+pub mod term;

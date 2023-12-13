@@ -1,7 +1,6 @@
-#[allow(dead_code)]
-
-mod game;
 mod engine;
+#[allow(dead_code)]
+mod game;
 
 use game::run::run;
 
@@ -19,7 +18,7 @@ fn main() -> Result<(), String> {
         size: (100, 100),
         window: (100, 100),
         tick: 60.0,
-        term: false
+        term: false,
     };
     handle_args(&mut params)?;
 
@@ -37,11 +36,14 @@ fn handle_args(params: &mut Params) -> Result<(), String> {
             "--window" | "-w" => params.window = parse_window(&mut args)?,
             "--tick" | "-t" => params.tick = parse_tick(&mut args)?,
             "--term" | "-x" => params.term = true,
-            "--help" | "-h" => { help(); break },
+            "--help" | "-h" => {
+                help();
+                break;
+            }
             s => {
                 help();
                 return Err(format!("Unsupported argument : {}", s));
-            },
+            }
         }
     }
     Ok(())

@@ -1,6 +1,6 @@
+/// All 18 Types from Pokemon as of 2023
 #[derive(Debug)]
 pub enum Type {
-    /// All 18 Types from Pokemon as of 2023
     Normal,
     Fire,
     Water,
@@ -43,6 +43,7 @@ impl Type {
         &Self::Fairy,
     ];
 
+    /// Returns a random Type, evenly distributed
     pub fn get_random() -> &'static Self {
         Self::TYPES[rand::random::<usize>() % 18]
     }
