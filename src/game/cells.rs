@@ -4,7 +4,7 @@ use crate::game::types::Type;
 /// Cell representation
 pub struct Cell {
     /// The type of the cell
-    pub type_c: &'static Type,
+    pub type_c: Option<&'static Type>,
     /// Base damage dealt to other cells
     pub attack: f32,
     /// Reduces damage taken by this amount
@@ -21,7 +21,7 @@ impl Cell {
     /// Create a cell of specified type
     fn init_type(t: &'static Type) -> Self {
         Self {
-            type_c: t,
+            type_c: Some(t),
             ..Default::default()
         }
     }
@@ -29,7 +29,7 @@ impl Cell {
     /// Create cell of random type
     fn init_random() -> Self {
         Self {
-            type_c: Type::get_random(),
+            type_c: Some(Type::get_random()),
             ..Default::default()
         }
     }
@@ -38,11 +38,11 @@ impl Cell {
 impl Default for Cell {
     fn default() -> Self {
         Self {
-            type_c: &Type::Normal,
+            type_c: None,
             attack: 2.5,
             defense: 2.5,
             speed: 2.5,
-            hp: 2.5,
+            hp: 20.0,
         }
     }
 }
