@@ -5,7 +5,7 @@ mod game;
 
 use game::run::run;
 
-struct Params {
+pub struct Params {
     size: (u32, u32),
     window: (u32, u32),
     tick: f32,
