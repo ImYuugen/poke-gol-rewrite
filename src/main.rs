@@ -23,7 +23,7 @@ fn main() -> Result<(), String> {
     };
     handle_args(&mut params)?;
 
-    run(params);
+    futures::executor::block_on(run(params));
 
     Ok(())
 }

@@ -1,24 +1,24 @@
 /// All 18 Types from Pokemon as of 2023
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Type {
-    Normal,
-    Fire,
-    Water,
-    Grass,
-    Electric,
-    Ice,
-    Fighting,
-    Poison,
-    Ground,
-    Flying,
-    Psychic,
-    Bug,
-    Rock,
-    Ghost,
-    Dark,
-    Dragon,
-    Steel,
-    Fairy,
+    Normal = 0,
+    Fire = 1,
+    Water = 2,
+    Grass = 3,
+    Electric = 4,
+    Ice = 5,
+    Fighting = 6,
+    Poison = 7,
+    Ground = 8,
+    Flying = 9,
+    Psychic = 10,
+    Bug = 11,
+    Rock = 12,
+    Ghost = 13,
+    Dark = 14,
+    Dragon = 15,
+    Steel = 16,
+    Fairy = 17,
 }
 
 impl Type {
@@ -68,5 +68,9 @@ impl Type {
     /// Returns a random Type, evenly distributed
     pub fn get_random() -> &'static Self {
         Self::TYPES[rand::random::<usize>() % 18]
+    }
+
+    pub fn get_multiplier(&self, other: &Self) -> f32 {
+        Self::MULTIPLIERS[*self as usize][*other as usize]
     }
 }

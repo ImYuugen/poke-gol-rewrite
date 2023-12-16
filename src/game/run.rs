@@ -3,9 +3,17 @@ use std::{thread, time};
 
 /// Runs the simulation and the render,
 /// being a window or in terminal based on [params](Params).
-pub fn run(params: Params) {
+pub async fn run(params: Params) {
     let mut cells = cells::init_cells(params.size);
 
+    if params.term {
+        ctrlc::set_handler(move || {
+            term::term_restore();
+            std::process::exit(0);
+        }).expect("Could not set ctrl+c handler");
+
+        term::term_init();
+    }
     // TODO: Separate render thread
 
     let frame_time = time::Duration::from_secs_f32(1.0 / params.tick);
@@ -13,16 +21,23 @@ pub fn run(params: Params) {
     loop {
         let tick_time = time::Instant::now();
 
-        sim_tick(&mut cells);
+        sim_tick(&mut cells).await;
         if params.term {
             let _ = term::draw(&cells);
         }
         let tick_time = tick_time - time::Instant::now();
 
+        cells = cells::init_cells(params.size);
         // Throttle tick
         thread::sleep(frame_time - tick_time);
     }
 }
 
 /// Computes the next step of the simulation
-fn sim_tick(_cells: &mut [Vec<cells::Cell>]) {}
+async fn sim_tick(cells: &mut [Vec<cells::Cell>]) {
+    for i in 0..(cells.len()) {
+        for j in 0..(cells[0].len()) {
+            cells::Cell::attack_neighbours(cells, (j, i)).await;
+        }
+    }
+}
