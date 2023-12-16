@@ -2,11 +2,18 @@ use crate::game::{cells, types};
 use crossterm::{cursor, execute};
 use owo_colors::{FgDynColorDisplay, OwoColorize, Rgb};
 
+pub fn term_init() {
+    let _ = execute!(std::io::stdout(), cursor::Hide);
+}
+
+pub fn term_restore() {
+    let _ = execute!(std::io::stdout(), cursor::Show);
+}
+
 /// Prints every cell on the board.
 pub fn draw(cells: &[Vec<cells::Cell>]) -> Result<(), std::io::Error> {
     let mut buf = String::with_capacity(cells.len() * cells[0].len());
 
-    execute!(std::io::stdout(), cursor::SavePosition)?;
     for row in cells.iter() {
         for cell in row.iter() {
             buf.push_str(&format!("{}", type_repr(cell.type_c)));
@@ -14,9 +21,8 @@ pub fn draw(cells: &[Vec<cells::Cell>]) -> Result<(), std::io::Error> {
         buf.push('\n');
     }
 
-    // FIX: Board not overwriting when console not cleared
     print!("{}", buf);
-    execute!(std::io::stdout(), cursor::RestorePosition)?;
+    execute!(std::io::stdout(), cursor::MoveUp(cells.len() as u16))?;
     Ok(())
 }
 
