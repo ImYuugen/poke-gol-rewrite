@@ -1,5 +1,5 @@
 /// All 18 Types from Pokemon as of 2023
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Type {
     Normal = 0,
     Fire = 1,
@@ -44,33 +44,33 @@ impl Type {
         [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 0.5, 1.0 ], // Fy
     ];
 
-    pub const TYPES: [&'static Self; 18] = [
-        &Self::Normal,
-        &Self::Fire,
-        &Self::Water,
-        &Self::Grass,
-        &Self::Electric,
-        &Self::Ice,
-        &Self::Fighting,
-        &Self::Poison,
-        &Self::Ground,
-        &Self::Flying,
-        &Self::Psychic,
-        &Self::Bug,
-        &Self::Rock,
-        &Self::Ghost,
-        &Self::Dark,
-        &Self::Dragon,
-        &Self::Steel,
-        &Self::Fairy,
+    pub const TYPES: [Self; 18] = [
+        Self::Normal,
+        Self::Fire,
+        Self::Water,
+        Self::Grass,
+        Self::Electric,
+        Self::Ice,
+        Self::Fighting,
+        Self::Poison,
+        Self::Ground,
+        Self::Flying,
+        Self::Psychic,
+        Self::Bug,
+        Self::Rock,
+        Self::Ghost,
+        Self::Dark,
+        Self::Dragon,
+        Self::Steel,
+        Self::Fairy,
     ];
 
     /// Returns a random Type, evenly distributed
-    pub fn get_random() -> &'static Self {
+    pub fn get_random() -> Self {
         Self::TYPES[rand::random::<usize>() % 18]
     }
 
-    pub fn get_multiplier(&self, other: &Self) -> f32 {
-        Self::MULTIPLIERS[*self as usize][*other as usize]
+    pub fn get_multiplier(self, other: Self) -> f32 {
+        Self::MULTIPLIERS[self as usize][other as usize]
     }
 }

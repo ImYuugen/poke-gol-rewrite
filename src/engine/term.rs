@@ -27,7 +27,7 @@ pub fn draw(cells: &[Vec<cells::Cell>]) -> Result<(), std::io::Error> {
 }
 
 /// Returns the character that should represent a cell of a given [Type](game/Type).
-fn type_repr(t: Option<&'static types::Type>) -> FgDynColorDisplay<'_, Rgb, &str> {
+fn type_repr(t: Option<types::Type>) -> FgDynColorDisplay<'static, Rgb, &'static str> {
     let (r, g, b) = match t {
         Some(types::Type::Normal) => (168, 167, 122),
         Some(types::Type::Fire) => (238, 129, 48),

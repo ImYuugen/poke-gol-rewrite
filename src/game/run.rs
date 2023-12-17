@@ -21,13 +21,12 @@ pub async fn run(params: Params) {
     loop {
         let tick_time = time::Instant::now();
 
-        sim_tick(&mut cells).await;
         if params.term {
             let _ = term::draw(&cells);
         }
+        sim_tick(&mut cells).await;
         let tick_time = tick_time - time::Instant::now();
 
-        cells = cells::init_cells(params.size);
         // Throttle tick
         thread::sleep(frame_time - tick_time);
     }
@@ -37,7 +36,10 @@ pub async fn run(params: Params) {
 async fn sim_tick(cells: &mut [Vec<cells::Cell>]) {
     for i in 0..(cells.len()) {
         for j in 0..(cells[0].len()) {
-            cells::Cell::attack_neighbours(cells, (j, i)).await;
+            match cells[i][j].type_c {
+                Some(_) => cells::Cell::attack_neighbours(cells, (i, j)).await,
+                _ => cells::Cell::replace_by_neighbour(cells, (i, j)).await,
+            };
         }
     }
 }
