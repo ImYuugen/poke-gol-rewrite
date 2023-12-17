@@ -27,27 +27,26 @@ pub fn draw(cells: &[Vec<cells::Cell>]) -> Result<(), std::io::Error> {
 }
 
 /// Returns the character that should represent a cell of a given [Type](game/Type).
-fn type_repr(t: Option<types::Type>) -> FgDynColorDisplay<'static, Rgb, &'static str> {
+fn type_repr(t: types::Type) -> FgDynColorDisplay<'static, Rgb, &'static str> {
     let (r, g, b) = match t {
-        Some(types::Type::Normal) => (168, 167, 122),
-        Some(types::Type::Fire) => (238, 129, 48),
-        Some(types::Type::Water) => (99, 144, 240),
-        Some(types::Type::Grass) => (122, 199, 76),
-        Some(types::Type::Electric) => (247, 208, 44),
-        Some(types::Type::Ice) => (150, 217, 214),
-        Some(types::Type::Fighting) => (194, 46, 40),
-        Some(types::Type::Poison) => (163, 62, 161),
-        Some(types::Type::Ground) => (226, 191, 101),
-        Some(types::Type::Flying) => (169, 143, 243),
-        Some(types::Type::Psychic) => (249, 85, 135),
-        Some(types::Type::Bug) => (166, 185, 26),
-        Some(types::Type::Rock) => (182, 161, 54),
-        Some(types::Type::Ghost) => (115, 87, 151),
-        Some(types::Type::Dark) => (112, 87, 70),
-        Some(types::Type::Dragon) => (111, 53, 252),
-        Some(types::Type::Steel) => (183, 183, 206),
-        Some(types::Type::Fairy) => (214, 133, 173),
-        None => (0, 0, 0),
+        types::Type::Normal => (168, 167, 122),
+        types::Type::Fire => (238, 129, 48),
+        types::Type::Water => (99, 144, 240),
+        types::Type::Grass => (122, 199, 76),
+        types::Type::Electric => (247, 208, 44),
+        types::Type::Ice => (150, 217, 214),
+        types::Type::Fighting => (194, 46, 40),
+        types::Type::Poison => (163, 62, 161),
+        types::Type::Ground => (226, 191, 101),
+        types::Type::Flying => (169, 143, 243),
+        types::Type::Psychic => (249, 85, 135),
+        types::Type::Bug => (166, 185, 26),
+        types::Type::Rock => (182, 161, 54),
+        types::Type::Ghost => (115, 87, 151),
+        types::Type::Dark => (112, 87, 70),
+        types::Type::Dragon => (111, 53, 252),
+        types::Type::Steel => (183, 183, 206),
+        types::Type::Fairy => (214, 133, 173),
     };
     "■".truecolor(r, g, b)
 }

@@ -36,10 +36,7 @@ pub async fn run(params: Params) {
 async fn sim_tick(cells: &mut [Vec<cells::Cell>]) {
     for i in 0..(cells.len()) {
         for j in 0..(cells[0].len()) {
-            match cells[i][j].type_c {
-                Some(_) => cells::Cell::attack_neighbours(cells, (i, j)).await,
-                _ => cells::Cell::replace_by_neighbour(cells, (i, j)).await,
-            };
+            cells::Cell::attack_neighbours(cells, (i, j)).await;
         }
     }
 }
