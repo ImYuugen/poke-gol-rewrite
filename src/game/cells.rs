@@ -29,18 +29,14 @@ impl Cell {
     }
 
     pub async fn attack_neighbours(cells: &mut [Vec<Self>], c1: (usize, usize)) {
-        let (min_x, max_x) = (
-            if c1.0 == 0 { 0 } else { 1 },
-            if c1.0 == cells.len() - 1 { 1 } else { 2 }
-        );
-        let (min_y, max_y) = (
-            if c1.1 == 0 { 0 } else { 1 },
-            if c1.1 == cells[0].len() - 1 { 1 } else { 2 }
-        );
-
-        for off_x in 0..=max_x {
-            for off_y in 0..=max_y {
-                Self::attack(cells, (c1.0, c1.1), (c1.0 - min_x + off_x, c1.1 - min_y + off_y));
+        for off_x in 0..=2 {
+            for off_y in 0..=2 {
+                Self::attack(cells,
+                    (c1.0, c1.1), (
+                        (c1.0 + cells[0].len() + off_x - 1) % cells[0].len(),
+                        (c1.1 + cells.len() + off_y - 1) % cells.len()
+                    )
+                );
             }
         }
     }
