@@ -11,5 +11,4 @@ redrawn, this way rendering does not need to way for the game to finish ticking.
 #### TODO
 - Rendering
 - Separate rendering thread
-- Torus shaped map
 - Cell mutation (as in stat mutation)
